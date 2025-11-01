@@ -1,0 +1,5 @@
+Style:
+  BasedOnStyle: Chromium
+  AlignAfterOpenBracket: BlockIndent
+  BinPackArguments: false
+  BinPackParameters: AlwaysOnePerLine

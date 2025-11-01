@@ -1,0 +1,29 @@
+{
+	"default_template": "api-template",
+	"templates": [
+		{
+			"template_name": "api-template",
+			"path": "/home/marcig/Documents/projects/api-template",
+			"files_to_replace": [
+				"Makefile",
+				"go.mod"
+			]
+		},
+		{
+			"template_name": "ebit",
+			"path": "/home/marcig/Documents/projects/ebit",
+			"files_to_replace": [
+				"Makefile",
+				"go.mod"
+			]
+		},
+		{
+			"template_name": "guml",
+			"path": "/home/marcig/Documents/projects/guml"
+		},
+		{
+			"template_name": "jshot",
+			"path": "/home/marcig/Documents/projects/jshot"
+		}
+	]
+}
