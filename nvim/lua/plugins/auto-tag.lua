@@ -1,3 +1,3 @@
-return  {
-    'tronikelis/ts-autotag.nvim',
-  }
+return {
+	"tronikelis/ts-autotag.nvim",
+}

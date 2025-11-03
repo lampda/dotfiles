@@ -1,19 +1,26 @@
 return {
 	"hrsh7th/nvim-cmp",
+	dependencies = {
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"rafamadriz/friendly-snippets",
+		{
+
+			"L3MON4D3/LuaSnip",
+			version = "v2.*",
+			build = "make install_jsregexp",
+			-- config = function()
+			-- 	require("luasnip.loaders.from_vscode").lazy_load({
+			-- 		paths = { vim.fn.stdpath("config") .. "/snippets" },
+			-- 	})
+			-- end,
+		},
+	},
 	config = function()
 		local cmp = require("cmp")
-		local luasnip = require("luasnip")
-		luasnip.filetype_extend("templ", { "go", "html" })
-
-		require("luasnip.loaders.from_vscode").lazy_load()
+		require("luasnip.loaders.from_vscode").lazy_load({ paths = "~/.config/nvim/snippets" })
+		-- local luasnip = require("luasnip")
 		cmp.setup({
-			snippet = {
-				-- REQUIRED - you must specify a snippet engine
-				expand = function(args)
-					-- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-					luasnip.lsp_expand(args.body) -- For `luasnip` users.
-				end,
-			},
 			window = {
 				completion = cmp.config.window.bordered(),
 				documentation = cmp.config.window.bordered(),
@@ -25,11 +32,28 @@ return {
 				["<C-e>"] = cmp.mapping.abort(),
 				["<Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set       `select` to `false` to only confirm explicitly selected items.
 			}),
+
 			sources = cmp.config.sources({
+				{
+					name = "nvim_lsp",
+					-- priority = 100,
+				},
+				{
+					name = "path",
+					option = {
+						pathMappings = {
+							["@"] = "${folder}/src",
+							["/"] = "${folder}/src/public/",
+							["~@"] = "${folder}/src",
+							["/images"] = "${folder}/src/images",
+							["/components"] = "${folder}/src/components",
+						},
+					},
+				},
 				{ name = "buffer" },
-				{ name = "nvim_lsp" },
 				{ name = "luasnip" }, -- For luasnip users.
 			}),
 		})
+		require("luasnip.loaders.from_vscode").lazy_load()
 	end,
 }
