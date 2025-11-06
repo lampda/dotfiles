@@ -72,3 +72,4 @@ alias cd=z
 alias vim=nvim
 alias src="source  ~/.zshrc"
 alias config="nvim ~/dotfiles/zsh/.zshrc"
+alias s="kitten ssh"

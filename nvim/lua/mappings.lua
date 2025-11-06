@@ -29,6 +29,11 @@ vim.keymap.set({ "n" }, "<c-p>", "<cmd>cp<cr>", { noremap = true, desc = "no hig
 -- vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 -- vim.keymap.set("n", "<A-k>", "<cmd>m .-2<CR>==")
 -- vim.keymap.set("n", "<A-j>", "<cmd>m .+1<CR>==")
+function diagnostic()
+	vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end
+vim.keymap.set({ "n" }, "<leader>d", diagnostic, { noremap = true, desc = "replacement in selection" })
+-- Toggle compiler results
 vim.keymap.set("n", "<C-c>", CompilerModeChafoide)
 vim.keymap.set("n", "<A-c>", "<cmd>ccl<CR>")
 vim.keymap.set("n", "<leader>rn", function()

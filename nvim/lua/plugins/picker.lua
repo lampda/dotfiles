@@ -300,6 +300,13 @@ return {
 			desc = "Quickfix List",
 		},
 		{
+			"<leader>se",
+			function()
+				vim.diagnostic.setqflist()
+			end,
+			desc = "Resume",
+		},
+		{
 			"<leader><leader>",
 			function()
 				Snacks.picker.resume()
