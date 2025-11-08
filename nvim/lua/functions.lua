@@ -35,7 +35,7 @@ function InsertPrint()
 	local pos = vim.api.nvim_win_get_cursor(0)[2]
 	local line = vim.api.nvim_get_current_line()
 	local ext = vim.fn.expand("%:e")
-	local text = "console.log();"
+	local text = "console.log()"
 	local jump = 0
 	if ext == "c" then
 		text = "printf();"

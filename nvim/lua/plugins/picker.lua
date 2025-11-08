@@ -165,7 +165,7 @@ return {
 			desc = "Grep",
 		},
 		{
-			"<leader>w",
+			"<C-f>",
 			function()
 				Snacks.picker.grep_word()
 			end,
@@ -328,13 +328,13 @@ return {
 			desc = "Colorschemes",
 		},
 		-- LSP
-		{
-			"gd",
-			function()
-				Snacks.picker.lsp_definitions()
-			end,
-			desc = "Goto Definition",
-		},
+		-- {
+		-- 	"gd",
+		-- 	function()
+		-- 		Snacks.picker.lsp_definitions()
+		-- 	end,
+		-- 	desc = "Goto Definition",
+		-- },
 		{
 			"gD",
 			function()
