@@ -23,6 +23,14 @@ autocmd("BufReadPost", {
 	end,
 	desc = "Restore cursor position after reopening file",
 })
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	pattern = "*",
+	callback = function()
+		if vim.g.savesession then
+			vim.api.nvim_command("mks!")
+		end
+	end,
+})
 vim.g.mapleader = " "
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
@@ -40,5 +48,8 @@ vim.opt.swapfile = false
 vim.opt.inccommand = "split"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+vim.g.python_host_prog = "/usr/sbin/python"
+vim.g.python3_host_prog = "/usr/sbin/python"
+-- python3 -m venv ~/venvs/.nvim-venv && source ~/venvs/.nvim-venv/bin/activate && python3 -m pip install pynvim
 vim.diagnostic.enable(false)
 vim.api.nvim_set_hl(0, "MiniPickNormal", { bg = "#cf2224", default = true })

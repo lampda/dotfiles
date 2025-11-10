@@ -15,7 +15,7 @@ return {
 			desc = "Smart Find Files",
 		},
 		{
-			"<leader>,",
+			"<leader>b",
 			function()
 				Snacks.picker.buffers()
 			end,
@@ -92,57 +92,6 @@ return {
 			end,
 			desc = "Recent",
 		},
-		-- git
-		{
-			"<leader>gb",
-			function()
-				Snacks.picker.git_branches()
-			end,
-			desc = "Git Branches",
-		},
-		{
-			"<leader>gl",
-			function()
-				Snacks.picker.git_log()
-			end,
-			desc = "Git Log",
-		},
-		{
-			"<leader>gL",
-			function()
-				Snacks.picker.git_log_line()
-			end,
-			desc = "Git Log Line",
-		},
-		{
-			"<leader>gs",
-			function()
-				Snacks.picker.git_status()
-			end,
-			desc = "Git Status",
-		},
-		{
-			"<leader>gS",
-			function()
-				Snacks.picker.git_stash()
-			end,
-			desc = "Git Stash",
-		},
-		{
-			"<leader>gd",
-			function()
-				Snacks.picker.git_diff()
-			end,
-			desc = "Git Diff (Hunks)",
-		},
-		{
-			"<leader>gf",
-			function()
-				Snacks.picker.git_log_file()
-			end,
-			desc = "Git Log File",
-		},
-		-- Grep
 		{
 			"<leader>sb",
 			function()
@@ -156,13 +105,6 @@ return {
 				Snacks.picker.grep_buffers()
 			end,
 			desc = "Grep Open Buffers",
-		},
-		{
-			"<leader>sg",
-			function()
-				Snacks.picker.grep()
-			end,
-			desc = "Grep",
 		},
 		{
 			"<C-f>",
@@ -371,23 +313,65 @@ return {
 			end,
 			desc = "LSP Workspace Symbols",
 		},
+		-- {
+		-- 	"<leader>S",
+		-- 	function()
+		-- 		-- Search for directories and open them in oil
+		-- 		local _, oil_dir = pcall(require("oil").get_current_dir)
+		-- 		Snacks.picker.pick({
+		-- 			title = "Find in directories",
+		-- 			format = "file",
+		-- 			live = true,
+		-- 			cwd = oil_dir,
+		-- 			finder = "grep",
+		-- 			confirm = function(picker, item)
+		-- 				if item == nil then
+		-- 					return
+		-- 				end
+		-- 				picker:close()
+		-- 				require("oil").open(oil_dir .. item.file)
+		-- 			end,
+		-- 		})
+		-- 	end,
+		-- 	desc = "Directories",
+		-- },
 		{
-			"<leader>S",
+			"<leader>\\",
 			function()
 				-- Search for directories and open them in oil
 				local _, oil_dir = pcall(require("oil").get_current_dir)
 				Snacks.picker.pick({
-					title = "Find in directories",
+					title = "Directories",
 					format = "file",
-					live = true,
 					cwd = oil_dir,
-					finder = "grep",
-					confirm = function(picker, item)
-						if item == nil then
-							return
+					finder = function(opts, ctx)
+						local args = { "--type", "directory", "--color", "never" }
+						if opts.hidden then
+							table.insert(args, "--hidden")
 						end
+						if opts.ignored then
+							table.insert(args, "--no-ignore")
+						end
+						local cwd = vim.fs.normalize(opts.cwd or vim.uv.cwd() or ".")
+						local proc_opts = {
+							cmd = "fd",
+							args = args,
+							---@param item snacks.picker.finder.Item
+							transform = function(item)
+								item.cwd = cwd
+								item.file = item.text
+								item.dir = true
+								-- HACK: Pre calcualting _path and setting file to it here, since the directory previewer doesn't handle
+								-- cwd correctly currently
+								-- https://github.com/folke/snacks.nvim/discussions/2093#discussion-8658159
+								item.file = Snacks.picker.util.path(item)
+							end,
+						}
+						return require("snacks.picker.source.proc").proc({ opts, proc_opts }, ctx)
+					end,
+					confirm = function(picker, item)
 						picker:close()
-						require("oil").open(oil_dir .. item.file)
+						require("oil").open(item.file)
 					end,
 				})
 			end,

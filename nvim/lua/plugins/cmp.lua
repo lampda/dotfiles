@@ -20,6 +20,16 @@ return {
 		local cmp = require("cmp")
 		require("luasnip.loaders.from_vscode").lazy_load({ paths = "~/.config/nvim/snippets" })
 		-- local luasnip = require("luasnip")
+		cmp.setup.cmdline("/", {
+			sources = {
+				{ name = "buffer" },
+			},
+		})
+		cmp.setup.cmdline(":", {
+			sources = {
+				{ name = "cmdline" },
+			},
+		})
 		cmp.setup({
 			window = {
 				completion = cmp.config.window.bordered(),

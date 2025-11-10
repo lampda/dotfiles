@@ -4,7 +4,7 @@ return {
 	cmd = { "ConformInfo" },
 	keys = {
 		{
-			"<c-f>",
+			"<leader>f",
 			function()
 				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,

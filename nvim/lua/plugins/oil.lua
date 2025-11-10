@@ -76,6 +76,48 @@ return {
 				["gx"] = "actions.open_external",
 				["g."] = { "actions.toggle_hidden", mode = "n" },
 				["g\\"] = { "actions.toggle_trash", mode = "n" },
+				["<leader>/"] = {
+					function()
+						-- Search for directories and open them in oil
+						local _, oil_dir = pcall(require("oil").get_current_dir)
+						Snacks.picker.pick({
+							title = "Find in directories",
+							format = "file",
+							live = true,
+							cwd = oil_dir,
+							finder = "grep",
+							confirm = function(picker, item)
+								if item == nil then
+									return
+								end
+								picker:close()
+								require("oil").open(oil_dir .. item.file)
+							end,
+						})
+					end,
+					mode = "n",
+				},
+				["<leader>/"] = {
+					function()
+						-- Search for directories and open them in oil
+						local _, oil_dir = pcall(require("oil").get_current_dir)
+						Snacks.picker.pick({
+							title = "Find in directories",
+							format = "file",
+							live = true,
+							cwd = oil_dir,
+							finder = "grep",
+							confirm = function(picker, item)
+								if item == nil then
+									return
+								end
+								picker:close()
+								require("oil").open(oil_dir .. item.file)
+							end,
+						})
+					end,
+					mode = "n",
+				},
 			},
 			-- Set to false to disable all of the above keymaps
 			use_default_keymaps = true,
@@ -204,7 +246,10 @@ return {
 		})
 	end,
 	-- Optional dependencies
-	dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+	dependencies = {
+		{ "nvim-mini/mini.icons", opts = {} },
+		{ "folke/snacks.nvim" },
+	},
 	-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
 	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 	lazy = false,
