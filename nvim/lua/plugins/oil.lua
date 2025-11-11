@@ -76,28 +76,7 @@ return {
 				["gx"] = "actions.open_external",
 				["g."] = { "actions.toggle_hidden", mode = "n" },
 				["g\\"] = { "actions.toggle_trash", mode = "n" },
-				["<leader>/"] = {
-					function()
-						-- Search for directories and open them in oil
-						local _, oil_dir = pcall(require("oil").get_current_dir)
-						Snacks.picker.pick({
-							title = "Find in directories",
-							format = "file",
-							live = true,
-							cwd = oil_dir,
-							finder = "grep",
-							confirm = function(picker, item)
-								if item == nil then
-									return
-								end
-								picker:close()
-								require("oil").open(oil_dir .. item.file)
-							end,
-						})
-					end,
-					mode = "n",
-				},
-				["<leader>/"] = {
+				["<leader>sg"] = {
 					function()
 						-- Search for directories and open them in oil
 						local _, oil_dir = pcall(require("oil").get_current_dir)
