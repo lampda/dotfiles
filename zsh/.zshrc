@@ -61,15 +61,7 @@ lazygit-ctrl-g () {
 }
 
 open-vim-oil () {
-  if [[ -z "$@" ]]; then
-	if [[ -f "./Session.vim" ]]; then
-	    nvim -S Session.vim -c 'lua vim.g.savesession = true' -c Oil
-	else
-	    nvim -c 'lua vim.g.savesession = true' -c Oil
-	fi
-	else
-		nvim -c Oil "$@"
-	fi
+	nvim -c Oil "$@"
 }
 
 make-run () {

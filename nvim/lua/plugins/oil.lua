@@ -30,9 +30,7 @@ return {
 				concealcursor = "nvic",
 			},
 			-- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
-			delete_to_trash = false,
 			-- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
-			skip_confirm_for_simple_edits = true,
 			-- Selecting a new/moved/renamed file or directory will prompt you to save changes first
 			-- (:help prompt_save_on_select_new_entry)
 			prompt_save_on_select_new_entry = true,
@@ -49,6 +47,29 @@ return {
 			-- Constrain the cursor to the editable parts of the oil buffer
 			-- Set to `false` to disable, or "name" to keep it on the file names
 			constrain_cursor = "editable",
+			skip_confirm_for_simple_edits = true,
+			delete_to_trash = true,
+			delete_file_callback = function(action, path)
+				local buffers = vim.api.nvim_list_bufs()
+				if buffers ~= nil then
+					-- TODO: (marcig): when deleting a directory, the dir buffers are not deleted, i go
+					-- file = io.open("test.txt", "a+")
+					print(path)
+					for k, buf_id in pairs(buffers) do
+						local name = vim.api.nvim_buf_get_name(buf_id)
+						-- file:write(name .. "??" .. path .. "\n")
+						if name == path then
+							vim.bo[buf_id].buflisted = false
+							vim.api.nvim_buf_delete(buf_id, { unload = true })
+							break
+						end
+					end
+					-- file:close()
+				else
+					print("buffers es nil")
+				end
+			end,
+
 			-- Set to true to watch the filesystem for changes and reload oil
 			watch_for_changes = false,
 			-- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
@@ -60,11 +81,14 @@ return {
 			keymaps = {
 				["g?"] = { "actions.show_help", mode = "n" },
 				["<CR>"] = "actions.select",
-				["<C-s>"] = { "actions.select", opts = { vertical = true } },
+				["<leader>sv"] = { "actions.select", opts = { vertical = true } },
+				["<leader>cn"] = { "actions.copy_entry_filename", mode = "n" },
+				["<leader>cp"] = { "actions.copy_entry_path", mode = "n" },
 				["<C-\\>"] = { "actions.select", opts = { horizontal = true } },
 				["<C-t>"] = { "actions.select", opts = { tab = true } },
 				["<C-p>"] = "actions.preview",
 				["<C-l>"] = "<c-w>l",
+				["<C-s>"] = "<cmd>w<cr>",
 				["<C-h>"] = "<c-w>h",
 				["<C-c>"] = { "actions.close", mode = "n" },
 				["<leader>R"] = "actions.refresh",

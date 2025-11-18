@@ -41,9 +41,9 @@ vim.opt.undofile = true
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.wo.relativenumber = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
-vim.o.softtabstop = 2
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
 vim.opt.swapfile = false
 vim.opt.inccommand = "split"
 vim.opt.splitright = true
@@ -53,3 +53,4 @@ vim.g.python3_host_prog = "/usr/sbin/python"
 -- python3 -m venv ~/venvs/.nvim-venv && source ~/venvs/.nvim-venv/bin/activate && python3 -m pip install pynvim
 vim.diagnostic.enable(false)
 vim.api.nvim_set_hl(0, "MiniPickNormal", { bg = "#cf2224", default = true })
+vim.opt.sessionoptions = "curdir,folds,globals,help,tabpages,terminal,winsize"
