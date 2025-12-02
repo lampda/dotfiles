@@ -17,15 +17,33 @@ function SaveAll()
 		return
 	end
 	local ext = vim.fn.expand("%:e")
-	if ext == "go" then
-		local ok, _ = pcall(vim.cmd, "GoImports")
-		if ok then
-			print("imported files and saved")
-		end
-	else
+	if ext == "ts" or ext == "tsx" then
+		-- local ok, _ = pcall(vim.cmd, "TSToolsAddMissingImports")
+
+		-- if ok == false then
+		-- 	print("failed to add missing imports")
+		-- end
+
+		-- ok, _ = pcall(vim.cmd, "TSToolsOrganizeImports")
+		-- if ok == false then
+		-- 	print("failed to organize imports")
+		-- end
+
 		ok, _ = pcall(vim.cmd, "wa")
 		if ok then
 			print("saved files :3")
+		end
+	else
+		if ext == "go" then
+			local ok, _ = pcall(vim.cmd, "GoImports")
+			if ok then
+				print("imported files and saved")
+			end
+		else
+			ok, _ = pcall(vim.cmd, "wa")
+			if ok then
+				print("saved files :3")
+			end
 		end
 	end
 end
@@ -123,4 +141,12 @@ function CompilerModeChafoide()
 			print("compiled succesfully:3")
 		end
 	end
+end
+
+function GDLVBreak()
+	local current_win = vim.api.nvim_get_current_win()
+	local path = vim.api.nvim_buf_get_name(0)
+	local cursor_pos = vim.api.nvim_win_get_cursor(current_win)
+	local debugger_path = path .. ":" .. cursor_pos[1]
+	vim.fn.setreg("+", debugger_path)
 end

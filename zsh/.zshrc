@@ -2,6 +2,7 @@ path+=('/home/marcig/go/bin')
 export EDITOR="nvim"
 export MANPAGER="nvim +Man!"
 HISTFILE=~/.zsh_history
+COMBAG_DB_DSN=postgres://combag:memo@localhost/combag
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
@@ -15,6 +16,11 @@ source ~/github/znap/znap.zsh  # Start Znap
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu select
+autoload edit-command-line; zle -N edit-command-line
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 znap source zsh-completions
@@ -22,30 +28,30 @@ znap source zsh-syntax-highlighting
 znap source zsh-async
 znap source zsh-colored-man-pages
 znap source zsh-abbrev-alias
-znap source fzf-tab
+# znap source fzf-tab
 # disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
+# zstyle ':completion:*:git-checkout:*' sort false
 # set descriptions format to enable group support
 # NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
-zstyle ':completion:*:descriptions' format '[%d]'
+# zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':completion:*' menu no
+# zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # custom fzf flags
 # NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+# zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
 # To make fzf-tab follow FZF_DEFAULT_OPTS.
 # NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
+# zstyle ':fzf-tab:*' switch-group '<' '>'
 # Source - https://stackoverflow.com/a
 # Posted by PythonNut, modified by community. See post 'Timeline' for change history
 # Retrieved 2025-11-08, License - CC BY-SA 3.0
-zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
+# zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
     BUFFER="fg"
@@ -104,6 +110,10 @@ svim () {
 
 yt () {
 	yt-dlp $1 -o $2 -t mp4
+}
+
+function murder() {
+  kill -9 $(lsof -t -i:$1 -sTCP:LISTEN)
 }
 
 zle -N fancy-ctrl-z

@@ -74,7 +74,7 @@ return {
 					})
 				end,
 			},
-			ts_ls = {},
+			-- ts_ls = {},
 			tailwindcss = {},
 			ols = {
 				on_attach = function(client)
