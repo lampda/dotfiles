@@ -150,3 +150,18 @@ function GDLVBreak()
 	local debugger_path = path .. ":" .. cursor_pos[1]
 	vim.fn.setreg("+", debugger_path)
 end
+
+---@param p snacks.Picker
+function GetSnacksPickerPrompt(p)
+	local source = p.opts.source
+
+	if source == "files" or source == "buffers" then
+		current = p.input.filter.pattern
+	elseif source == "grep" then
+		current = p.input.filter.search
+	else
+		print(source)
+	end
+
+	return current
+end

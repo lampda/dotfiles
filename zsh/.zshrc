@@ -1,4 +1,5 @@
 path+=('/home/marcig/go/bin') 
+path+=('/home/marcig/.cargo/bin')
 export EDITOR="nvim"
 export MANPAGER="nvim +Man!"
 HISTFILE=~/.zsh_history
@@ -14,8 +15,11 @@ setopt appendhistory
 source ~/github/znap/znap.zsh  # Start Znap
 
 autoload -Uz compinit && compinit
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list '' \
+  'm:{a-z\-}={A-Z\_}' \
+  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
+  'r:|?=** m:{a-z\-}={A-Z\_}'
+# zstyle ':completion:*' menu select
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
@@ -28,30 +32,6 @@ znap source zsh-syntax-highlighting
 znap source zsh-async
 znap source zsh-colored-man-pages
 znap source zsh-abbrev-alias
-# znap source fzf-tab
-# disable sort when completing `git checkout`
-# zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
-# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
-# zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-# zstyle ':completion:*' menu no
-# preview directory's content with eza when completing cd
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-# custom fzf flags
-# NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-# zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
-# To make fzf-tab follow FZF_DEFAULT_OPTS.
-# NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
-# zstyle ':fzf-tab:*' use-fzf-default-opts yes
-# switch group using `<` and `>`
-# zstyle ':fzf-tab:*' switch-group '<' '>'
-# Source - https://stackoverflow.com/a
-# Posted by PythonNut, modified by community. See post 'Timeline' for change history
-# Retrieved 2025-11-08, License - CC BY-SA 3.0
-# zstyle ':completion:*' matcher-list 'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
     BUFFER="fg"
@@ -114,6 +94,12 @@ yt () {
 
 function murder() {
   kill -9 $(lsof -t -i:$1 -sTCP:LISTEN)
+}
+
+function rust() {
+	cargo new $1
+	cd $1
+	vim
 }
 
 zle -N fancy-ctrl-z

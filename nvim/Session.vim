@@ -14,11 +14,11 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +27 ~/dotfiles/nvim/lua/functions.lua
-badd +68 ~/dotfiles/nvim/lua/mappings.lua
+badd +378 lua/plugins/snacks.lua
+badd +5 after/ftplugin/typescriptreact.lua
 argglobal
 %argdel
-edit ~/dotfiles/nvim/lua/functions.lua
+edit after/ftplugin/typescriptreact.lua
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -35,10 +35,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
-exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 107 + 106) / 213)
+tcd ~/dotfiles/nvim
 argglobal
-balt ~/dotfiles/nvim/lua/options.lua
+balt ~/dotfiles/nvim/lua/mappings.lua
 setlocal foldmethod=manual
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -49,19 +50,19 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 27 - ((23 * winheight(0) + 24) / 48)
+let s:l = 6 - ((5 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 27
-normal! 033|
+keepjumps 6
+normal! 047|
 wincmd w
 argglobal
-if bufexists(fnamemodify("~/dotfiles/nvim/lua/mappings.lua", ":p")) | buffer ~/dotfiles/nvim/lua/mappings.lua | else | edit ~/dotfiles/nvim/lua/mappings.lua | endif
+if bufexists(fnamemodify("~/dotfiles/nvim/lua/plugins/snacks.lua", ":p")) | buffer ~/dotfiles/nvim/lua/plugins/snacks.lua | else | edit ~/dotfiles/nvim/lua/plugins/snacks.lua | endif
 if &buftype ==# 'terminal'
-  silent file ~/dotfiles/nvim/lua/mappings.lua
+  silent file ~/dotfiles/nvim/lua/plugins/snacks.lua
 endif
-balt ~/dotfiles/nvim/lua/plugins/lspconfig.lua
+balt ~/dotfiles/nvim/after/ftplugin/snacks_picker_input.lua
 setlocal foldmethod=manual
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -72,16 +73,15 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 68 - ((45 * winheight(0) + 24) / 48)
+let s:l = 379 - ((26 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 68
-normal! 035|
+keepjumps 379
+normal! 010|
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
-exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 107 + 106) / 213)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -97,6 +97,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

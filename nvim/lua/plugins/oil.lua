@@ -60,7 +60,7 @@ return {
 						-- file:write(name .. "??" .. path .. "\n")
 						if name == path then
 							vim.bo[buf_id].buflisted = false
-							vim.api.nvim_buf_delete(buf_id, { unload = true })
+							pcall(vim.api.nvim_buf_delete, buf_id, { unload = true })
 							break
 						end
 					end

@@ -1,9 +1,125 @@
 -- lazy.nvim
+-- make a grep that i can pass flags to
+-- but idk how much time it would take to do that
+-- so instead i will just make a custom grep call that just
+-- passes thecurrent buffer ft to the search and things
 return {
 	"folke/snacks.nvim",
 	opts = {
-		picker = {},
-		explorer = {},
+		zen =
+			---@class snacks.zen.Config
+			{
+				-- You can add any `Snacks.toggle` id here.
+				-- Toggle state is restored when the window is closed.
+				-- Toggle config options are NOT merged.
+				---@type table<string, boolean>
+				toggles = {
+					dim = false,
+					git_signs = false,
+					mini_diff_signs = false,
+					-- diagnostics = false,
+					-- inlay_hints = false,
+				},
+				center = true, -- center the window
+				show = {
+					statusline = false, -- can only be shown when using the global statusline
+					tabline = false,
+				},
+				---@type snacks.win.Config
+				win = {
+					style = "zen",
+					backdrop = {
+						transparent = false,
+						blend = 90,
+					},
+				},
+				--- Callback when the window is opened.
+				---@param win snacks.win
+				on_open = function(win) end,
+				--- Callback when the window is closed.
+				---@param win snacks.win
+				on_close = function(win) end,
+				--- Options for the `Snacks.zen.zoom()`
+				---@type snacks.zen.Config
+				zoom = {
+					toggles = {},
+					center = true,
+					show = { statusline = true, tabline = true },
+					win = {
+						backdrop = {
+							transparent = false,
+							blend = 90,
+						},
+						width = 90, -- full width
+					},
+				},
+			},
+		picker = {
+			jump = {
+				jumplist = true,
+				tagstack = false,
+				reuse_win = true,
+				close = true, -- close the picker when jumping/editing to a location (defaults to true)
+				match = true, -- jump to the first match position. (useful for `lines`)
+			},
+			layout = "owo",
+			layouts = {
+				owo = {
+					layout = {
+						box = "vertical",
+						backdrop = false,
+						row = -1,
+						width = 0,
+						height = 0.3,
+						border = "top",
+						title = " {title} {live} {flags}",
+						title_pos = "left",
+						{
+							box = "horizontal",
+							{ win = "list", border = "rounded", width = 0.6 },
+							{ win = "preview", title = "{preview}", border = "rounded" },
+						},
+						{ win = "input", height = 1, border = "top" },
+					},
+				},
+			},
+			win = {
+				input = {
+					keys = {
+						["<A-h>"] = { { "snacks_files" }, mode = { "n" } },
+						["<A-j>"] = { { "snacks_grep" }, mode = { "i", "n" } },
+						["<A-k>"] = { { "snacks_buffers" }, mode = { "i", "n" } },
+						["<A-l>"] = { { "snacks_files" }, mode = { "i", "n" } },
+					},
+				},
+			},
+			actions = {
+				---@param p snacks.Picker
+				snacks_files = function(p)
+					p:close()
+					local current = GetSnacksPickerPrompt(p)
+					Snacks.picker.files({ pattern = current })
+				end,
+				---@param p snacks.Picker
+				snacks_grep = function(p)
+					p:close()
+					local current = GetSnacksPickerPrompt(p)
+					Snacks.picker.grep({ search = current })
+				end,
+				---@param p snacks.Picker
+				snacks_buffers = function(p)
+					p:close()
+					local current = GetSnacksPickerPrompt(p)
+					Snacks.picker.buffers({ pattern = current })
+				end,
+				---@param p snacks.Picker
+				snacks_smart = function(p)
+					p:close()
+					local current = GetSnacksPickerPrompt(p)
+					Snacks.picker.buffers({ pattern = current })
+				end,
+			},
+		},
 	},
 	keys = {
 		-- Top Pickers & Explorer
@@ -72,6 +188,13 @@ return {
 			desc = "Find Files",
 		},
 		{
+			"<C-s>",
+			function()
+				Snacks.picker.resume()
+			end,
+			desc = "Snacks",
+		},
+		{
 			"<leader>fg",
 			function()
 				Snacks.picker.git_files()
@@ -93,13 +216,6 @@ return {
 			desc = "Recent",
 		},
 		{
-			"<leader>sb",
-			function()
-				Snacks.picker.lines()
-			end,
-			desc = "Buffer Lines",
-		},
-		{
 			"<leader>sB",
 			function()
 				Snacks.picker.grep_buffers()
@@ -109,10 +225,11 @@ return {
 		{
 			"<C-f>",
 			function()
-				Snacks.picker.grep_word()
+				local ext = "." .. vim.fn.expand("%:e")
+				Snacks.picker.grep_word({ pattern = ext })
 			end,
 			desc = "Visual selection or word",
-			mode = { "n", "x" },
+			mode = { "x" },
 		},
 		-- search
 		{
@@ -137,7 +254,7 @@ return {
 			desc = "Autocmds",
 		},
 		{
-			"<leader>sb",
+			"<leader>sl",
 			function()
 				Snacks.picker.lines()
 			end,
@@ -160,14 +277,14 @@ return {
 		{
 			"<leader>sd",
 			function()
-				Snacks.picker.diagnostics()
+				Snacks.picer.diagnostics()
 			end,
 			desc = "Diagnostics",
 		},
 		{
 			"<leader>sD",
 			function()
-				Snacks.picker.diagnostics_buffer()
+				Snacs.picker.diagnostics_buffer()
 			end,
 			desc = "Buffer Diagnostics",
 		},
@@ -207,7 +324,7 @@ return {
 			desc = "Keymaps",
 		},
 		{
-			"<leader>sl",
+			"<leader>sL",
 			function()
 				Snacks.picker.loclist()
 			end,
@@ -251,7 +368,7 @@ return {
 		{
 			"<leader><leader>",
 			function()
-				Snacks.picker.resume()
+				Snacks.picker.resume({ opts = { notify = false } })
 			end,
 			desc = "Resume",
 		},
@@ -263,24 +380,24 @@ return {
 			desc = "Undo History",
 		},
 		{
-			"<leader>uc",
+			"<leader>C",
 			function()
 				Snacks.picker.colorschemes()
 			end,
 			desc = "Colorschemes",
 		},
 		-- LSP
-		-- {
-		-- 	"gd",
-		-- 	function()
-		-- 		Snacks.picker.lsp_definitions()
-		-- 	end,
-		-- 	desc = "Goto Definition",
-		-- },
+		{
+			"gd",
+			function()
+				Snacks.picker.lsp_definitions()
+			end,
+			desc = "Goto Definition",
+		},
 		{
 			"gD",
 			function()
-				Snacks.picker.lsp_declarations()
+				Snacks.picker.lsp_declarations({ auto_confirm = true, show_empty = false })
 			end,
 			desc = "Goto Declaration",
 		},
@@ -300,7 +417,7 @@ return {
 			desc = "Goto Implementation",
 		},
 		{
-			"gy",
+			"gt",
 			function()
 				Snacks.picker.lsp_type_definitions()
 			end,
@@ -312,6 +429,20 @@ return {
 				Snacks.picker.lsp_workspace_symbols()
 			end,
 			desc = "LSP Workspace Symbols",
+		},
+		{
+			"<leader>z",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Toggle Zen Mode",
+		},
+		{
+			"<leader>Z",
+			function()
+				Snacks.zen.zoom()
+			end,
+			desc = "Toggle Zoom",
 		},
 		-- {
 		-- 	"<leader>S",

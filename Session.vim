@@ -14,11 +14,11 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +53 tmux/tmux.conf
-badd +69 ~/dotfiles/nvim/lua/mappings.lua
+badd +90 ~/dotfiles/nvim/lua/plugins/snacks.lua
+badd +38 ~/dotfiles/nvim/lua/functions.lua
 argglobal
 %argdel
-edit tmux/tmux.conf
+edit ~/dotfiles/nvim/lua/plugins/snacks.lua
 let s:save_splitbelow = &splitbelow
 let s:save_splitright = &splitright
 set splitbelow splitright
@@ -35,33 +35,10 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 86 + 87) / 174)
-exe 'vert 2resize ' . ((&columns * 87 + 87) / 174)
+exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 argglobal
-balt kitty/kitty.conf
-setlocal foldmethod=manual
-setlocal foldexpr=0
-setlocal foldmarker={{{,}}}
-setlocal foldignore=#
-setlocal foldlevel=0
-setlocal foldminlines=1
-setlocal foldnestmax=20
-setlocal foldenable
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 53 - ((18 * winheight(0) + 20) / 40)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 53
-normal! 032|
-wincmd w
-argglobal
-if bufexists(fnamemodify("~/dotfiles/nvim/lua/mappings.lua", ":p")) | buffer ~/dotfiles/nvim/lua/mappings.lua | else | edit ~/dotfiles/nvim/lua/mappings.lua | endif
-if &buftype ==# 'terminal'
-  silent file ~/dotfiles/nvim/lua/mappings.lua
-endif
-balt ~/dotfiles/nvim/lua/plugins/tmux.lua
+balt ~/dotfiles/Session.vim
 setlocal foldmethod=manual
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -72,16 +49,38 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 69 - ((18 * winheight(0) + 20) / 40)
+let s:l = 92 - ((25 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 69
-normal! 030|
+keepjumps 92
+normal! 015|
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 86 + 87) / 174)
-exe 'vert 2resize ' . ((&columns * 87 + 87) / 174)
+argglobal
+if bufexists(fnamemodify("~/dotfiles/nvim/lua/functions.lua", ":p")) | buffer ~/dotfiles/nvim/lua/functions.lua | else | edit ~/dotfiles/nvim/lua/functions.lua | endif
+if &buftype ==# 'terminal'
+  silent file ~/dotfiles/nvim/lua/functions.lua
+endif
+balt ~/dotfiles/nvim/lua/mappings.lua
+setlocal foldmethod=manual
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmarker={{{,}}}
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldenable
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 38 - ((37 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 38
+normal! 04|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -97,7 +96,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
