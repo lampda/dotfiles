@@ -159,11 +159,10 @@ end
 function GetSnacksPickerPrompt(p)
 	local source = p.opts.source
 
-	if source == "files" or source == "buffers" then
-		current = p.input.filter.pattern
-	elseif source == "grep" then
+	if source == "grep" then
 		current = p.input.filter.search
 	else
+		current = p.input.filter.pattern
 		print(source)
 	end
 

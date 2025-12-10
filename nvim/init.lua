@@ -1,5 +1,5 @@
 require("config.lazy")
 require("mappings")
 require("options")
-vim.cmd.colorscheme("catppuccin-macchiato")
+vim.cmd.colorscheme("pink-pony-club")
 print("nya init")

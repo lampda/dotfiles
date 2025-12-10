@@ -6,8 +6,8 @@
 return {
 	"folke/snacks.nvim",
 	opts = {
-		zen = 		---@class snacks.zen.Config
-{
+		---@class snacks.zen.Config
+		zen = {
 			-- You can add any `Snacks.toggle` id here.
 			-- Toggle state is restored when the window is closed.
 			-- Toggle config options are NOT merged.
@@ -85,10 +85,66 @@ return {
 			win = {
 				input = {
 					keys = {
-						["<A-h>"] = { { "snacks_files" }, mode = { "n" } },
-						["<A-j>"] = { { "snacks_grep" }, mode = { "i", "n" } },
-						["<A-k>"] = { { "snacks_buffers" }, mode = { "i", "n" } },
-						["<A-l>"] = { { "snacks_files" }, mode = { "i", "n" } },
+						["<C-s>"] = { { "snacks_smart" }, mode = { "i", "n" } },
+						["<C-j>"] = { { "snacks_grep" }, mode = { "i", "n" } },
+						["<C-k>"] = { { "snacks_buffers" }, mode = { "i", "n" } },
+						["<C-l>"] = { { "snacks_files" }, mode = { "i", "n" } },
+						["<c-a>"] = { "select_all", mode = { "n" } },
+						["<c-b>"] = { "preview_scroll_up", mode = { "n" } },
+						["<c-f>"] = { "preview_scroll_down", mode = { "n" } },
+						["<a-h>"] = "toggle_hidden",
+					},
+				},
+				list = {
+					keys = {
+						["/"] = "toggle_focus",
+						["<2-LeftMouse>"] = "confirm",
+						["<CR>"] = "confirm",
+						["<Down>"] = "list_down",
+						["<Esc>"] = "cancel",
+						["<S-CR>"] = { { "pick_win", "jump" } },
+						["<S-Tab>"] = { "select_and_prev", mode = { "n", "x" } },
+						["<Tab>"] = { "select_and_next", mode = { "n", "x" } },
+						["<Up>"] = "list_up",
+						["<a-d>"] = "inspect",
+						["<a-f>"] = "toggle_follow",
+						["<a-h>"] = "toggle_hidden",
+						["<a-i>"] = "toggle_ignored",
+						["<a-m>"] = "toggle_maximize",
+						["<a-p>"] = "toggle_preview",
+						["<a-z>"] = "cycle_win",
+						["<c-a>"] = { "select_all", mode = { "n" } },
+						["<c-b>"] = { "preview_scroll_up", mode = { "n" } },
+						["<c-d>"] = "list_scroll_down",
+						["<c-f>"] = "preview_scroll_down",
+						["<c-j>"] = "list_down",
+						["<c-k>"] = "list_up",
+						["<c-n>"] = "list_down",
+						["<c-p>"] = "list_up",
+						["<c-q>"] = "qflist",
+						["<c-g>"] = "print_path",
+						["<c-s>"] = "edit_split",
+						["<c-t>"] = "tab",
+						["<c-u>"] = "list_scroll_up",
+						["<c-v>"] = "edit_vsplit",
+						["<c-w>H"] = "layout_left",
+						["<c-w>J"] = "layout_bottom",
+						["<c-w>K"] = "layout_top",
+						["<c-w>L"] = "layout_right",
+						["?"] = "toggle_help_list",
+						["G"] = "list_bottom",
+						["gg"] = "list_top",
+						["i"] = "focus_input",
+						["j"] = "list_down",
+						["k"] = "list_up",
+						["q"] = "close",
+						["zb"] = "list_scroll_bottom",
+						["zt"] = "list_scroll_top",
+						["zz"] = "list_scroll_center",
+					},
+					wo = {
+						conceallevel = 2,
+						concealcursor = "nvc",
 					},
 				},
 			},
@@ -115,7 +171,7 @@ return {
 				snacks_smart = function(p)
 					p:close()
 					local current = GetSnacksPickerPrompt(p)
-					Snacks.picker.buffers({ pattern = current })
+					Snacks.picker.smart({ pattern = current })
 				end,
 			},
 		},
