@@ -6,54 +6,53 @@
 return {
 	"folke/snacks.nvim",
 	opts = {
-		zen =
-			---@class snacks.zen.Config
-			{
-				-- You can add any `Snacks.toggle` id here.
-				-- Toggle state is restored when the window is closed.
-				-- Toggle config options are NOT merged.
-				---@type table<string, boolean>
-				toggles = {
-					dim = false,
-					git_signs = false,
-					mini_diff_signs = false,
-					-- diagnostics = false,
-					-- inlay_hints = false,
+		zen = 		---@class snacks.zen.Config
+{
+			-- You can add any `Snacks.toggle` id here.
+			-- Toggle state is restored when the window is closed.
+			-- Toggle config options are NOT merged.
+			---@type table<string, boolean>
+			toggles = {
+				dim = false,
+				git_signs = false,
+				mini_diff_signs = false,
+				-- diagnostics = false,
+				-- inlay_hints = false,
+			},
+			center = true, -- center the window
+			show = {
+				statusline = false, -- can only be shown when using the global statusline
+				tabline = false,
+			},
+			---@type snacks.win.Config
+			win = {
+				style = "zen",
+				backdrop = {
+					transparent = false,
+					blend = 90,
 				},
-				center = true, -- center the window
-				show = {
-					statusline = false, -- can only be shown when using the global statusline
-					tabline = false,
-				},
-				---@type snacks.win.Config
+			},
+			--- Callback when the window is opened.
+			---@param win snacks.win
+			on_open = function(win) end,
+			--- Callback when the window is closed.
+			---@param win snacks.win
+			on_close = function(win) end,
+			--- Options for the `Snacks.zen.zoom()`
+			---@type snacks.zen.Config
+			zoom = {
+				toggles = {},
+				center = true,
+				show = { statusline = true, tabline = true },
 				win = {
-					style = "zen",
 					backdrop = {
 						transparent = false,
 						blend = 90,
 					},
-				},
-				--- Callback when the window is opened.
-				---@param win snacks.win
-				on_open = function(win) end,
-				--- Callback when the window is closed.
-				---@param win snacks.win
-				on_close = function(win) end,
-				--- Options for the `Snacks.zen.zoom()`
-				---@type snacks.zen.Config
-				zoom = {
-					toggles = {},
-					center = true,
-					show = { statusline = true, tabline = true },
-					win = {
-						backdrop = {
-							transparent = false,
-							blend = 90,
-						},
-						width = 90, -- full width
-					},
+					width = 90, -- full width
 				},
 			},
+		},
 		picker = {
 			jump = {
 				jumplist = true,
@@ -190,7 +189,7 @@ return {
 		{
 			"<C-s>",
 			function()
-				Snacks.picker.resume()
+				Snacks.picker.smart()
 			end,
 			desc = "Snacks",
 		},

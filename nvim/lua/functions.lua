@@ -114,7 +114,9 @@ function CompilerModeChafoide()
 		SaveAll()
 	end
 
+	pcall(vim.cmd, "ccl")
 	local ext = vim.fn.expand("%:e")
+	local filename = vim.fn.expand("%")
 	local og_cursor = vim.api.nvim_win_get_cursor(0)
 	local is_loc_list = named_window_exists("loclist")
 
@@ -123,7 +125,9 @@ function CompilerModeChafoide()
 		vim.cmd("botright 10lopen")
 	else
 		local results
-		if ext == "rs" then
+		if string.find(filename, "test") ~= nil then
+			pcall(vim.cmd, "silent make test")
+		elseif ext == "rs" then
 			pcall(vim.cmd, "silent make rustc")
 		else
 			pcall(vim.cmd, "silent make compile")

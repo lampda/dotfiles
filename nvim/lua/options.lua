@@ -31,6 +31,7 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 		end
 	end,
 })
+vim.lsp.set_log_level("OFF") -- turn complely off when not during 'debug'
 vim.g.mapleader = " "
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
@@ -48,8 +49,11 @@ vim.o.softtabstop = tabs
 vim.opt.swapfile = false
 vim.opt.inccommand = "split"
 vim.opt.splitright = true
+vim.opt.showmode = false -- We don't need to see things like -- INSERT -- anymore
+-- vim.opt.hlsearch = false -- No search highlight
 vim.opt.splitbelow = true
 vim.g.python_host_prog = "/usr/sbin/python"
+vim.opt.iskeyword:remove("_") -- Add - to be part of word
 vim.g.python3_host_prog = "/usr/sbin/python"
 -- python3 -m venv ~/venvs/.nvim-venv && source ~/venvs/.nvim-venv/bin/activate && python3 -m pip install pynvim
 vim.diagnostic.enable(false)

@@ -36,8 +36,8 @@ function diagnostic()
 end
 vim.keymap.set({ "n" }, "<leader>d", diagnostic, { noremap = true, desc = "replacement in selection" })
 -- Toggle compiler results
-vim.keymap.set("n", "<C-c>", CompilerModeChafoide)
-vim.keymap.set("n", "<A-c>", "<cmd>ccl<CR>")
+vim.keymap.set("n", "<A-c>", CompilerModeChafoide)
+vim.keymap.set("n", "<C-c>", "<cmd>ccl<CR>")
 vim.keymap.set("n", "<leader>rn", function()
 	-- it returns success status, thus you can fallback like so
 	if not require("ts-autotag").rename() then
@@ -48,8 +48,11 @@ vim.keymap.set("n", "<leader>q", "<cmd>qa<CR>")
 vim.keymap.set("n", "<leader>Q", "<cmd>qa!<CR>")
 -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 vim.keymap.set({ "n", "v", "x" }, "<leader>n", ":norm ", { desc = "enter norm command." })
+vim.keymap.set({ "n" }, "<leader>rf", ":%s/ ", { desc = "enter norm command." })
+vim.keymap.set({ "v", "x" }, "<leader>rs", ":s/ ", { desc = "enter norm command." })
 -- vim.keymap.set({ "n", "v", "x" }, "<leader>b", ":b ", { desc = "enter norm command." })
-vim.keymap.set({ "n", "v", "x" }, "<leader>o", ":Oil ~/", { desc = "enter oil command." })
+vim.keymap.set({ "n", "v", "x" }, "<leader>o", "<cmd>Oil ./<CR>", { desc = "enter oil command." })
+vim.keymap.set({ "n", "v", "x" }, "<leader>O", ":Oil ~/", { desc = "enter oil command." })
 vim.keymap.set("n", "<leader>t", ":$tabnew<CR>", { noremap = true })
 -- vim.keymap.set("n", "<leader>c", ":tabclose<CR>", { noremap = true })
 vim.keymap.set("n", "<leader>n", ":tabn<CR>", { noremap = true })

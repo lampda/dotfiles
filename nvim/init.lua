@@ -1,7 +1,5 @@
 require("config.lazy")
 require("mappings")
 require("options")
--- require("after.ftplugin.tsx")
--- require("after.ftplugin.js")
-vim.cmd.colorscheme("pink-pony-club")
+vim.cmd.colorscheme("catppuccin-macchiato")
 print("nya init")
