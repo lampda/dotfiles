@@ -88,7 +88,9 @@ return {
 				["<C-t>"] = { "actions.select", opts = { tab = true } },
 				["<C-p>"] = "actions.preview",
 				["<C-l>"] = "<c-w>l",
-				["<C-s>"] = "<cmd>w<cr>",
+				["<C-s>"] = function()
+					Snacks.picker.smart()
+				end,
 				["<C-h>"] = "<c-w>h",
 				["<C-c>"] = { "actions.close", mode = "n" },
 				["<leader>R"] = "actions.refresh",

@@ -89,6 +89,7 @@ return {
 						["<C-j>"] = { { "snacks_grep" }, mode = { "i", "n" } },
 						["<C-k>"] = { { "snacks_buffers" }, mode = { "i", "n" } },
 						["<C-l>"] = { { "snacks_files" }, mode = { "i", "n" } },
+						["<c-o>"] = { "snacks_oil", mode = { "n", "i" } },
 						["<c-a>"] = { "select_all", mode = { "n" } },
 						["<c-b>"] = { "preview_scroll_up", mode = { "n" } },
 						["<c-f>"] = { "preview_scroll_down", mode = { "n" } },
@@ -172,6 +173,20 @@ return {
 					p:close()
 					local current = GetSnacksPickerPrompt(p)
 					Snacks.picker.smart({ pattern = current })
+				end,
+				---@param p snacks.Picker
+				snacks_oil = function(p)
+					local cursor = p.list.cursor
+					local items = p.list.items
+					local item = items[cursor]
+					local file = item.file
+					if file ~= nil then
+						local parent_directory = GetParentPath(file)
+						p:close()
+						vim.cmd("Oil " .. parent_directory)
+					else
+						print("file is nil", cursor, items, item, file)
+					end
 				end,
 			},
 		},
@@ -443,18 +458,11 @@ return {
 		},
 		-- LSP
 		{
-			"gd",
+			"gD",
 			function()
 				Snacks.picker.lsp_definitions()
 			end,
 			desc = "Goto Definition",
-		},
-		{
-			"gD",
-			function()
-				Snacks.picker.lsp_declarations({ auto_confirm = true, show_empty = false })
-			end,
-			desc = "Goto Declaration",
 		},
 		{
 			"gr",

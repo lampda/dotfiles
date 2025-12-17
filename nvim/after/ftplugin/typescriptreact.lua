@@ -4,5 +4,5 @@ vim.api.nvim_buf_set_keymap(0, "n", "<leader>c", "<cmd>Oil src/contexts <CR>", {
 vim.api.nvim_buf_set_keymap(0, "n", "<leader>i", "<cmd>Oil src/api <CR>", { noremap = true })
 vim.api.nvim_buf_set_keymap(0, "n", "<leader>oi", "<cmd>TSToolsOrganizeImports<CR>", { noremap = true })
 vim.api.nvim_buf_set_keymap(0, "n", "<leader>mi", "<cmd>TSToolsAddMissingImports<CR>", { noremap = true })
-vim.api.nvim_buf_set_keymap(0, "n", "<leader>rf", "<cmd>TSToolsRenameFile<CR>", { noremap = true })
+vim.api.nvim_buf_set_keymap(0, "n", "<leader>rF", "<cmd>TSToolsRenameFile<CR>", { noremap = true })
 vim.api.nvim_buf_set_keymap(0, "n", "<leader>gD", "<cmd>TSToolsGoToSourceDefinition<CR>", { noremap = true })

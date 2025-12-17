@@ -13,6 +13,7 @@ end
 
 function SaveAll()
 	local name = vim.fn.expand("%")
+	print(name)
 	if name.len == 0 then
 		return
 	end
@@ -167,4 +168,15 @@ function GetSnacksPickerPrompt(p)
 	end
 
 	return current
+end
+
+function GetParentPath(path)
+	local pattern1 = ".*/"
+	pattern2 = "^(.+)\\"
+
+	if string.match(path, pattern1) == nil then
+		return string.match(path, pattern2)
+	else
+		return string.match(path, pattern1)
+	end
 end
